@@ -51,6 +51,15 @@ class Playlist():
         print('Playlist Download Complete.')
 
 
+def multi_playlist(self):
+    # hardcoded filename atm
+    with open('playlist_list.txt','r') as f:
+        for url in f.readlines():
+            p = Playlist(url.strip('\n'))
+            print(p.author, p.title)
+            p.download()
+
+
 if __name__ == "__main__":
     url = input("Enter Playlist URL: ")
     p = Playlist(url)
