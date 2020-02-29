@@ -1,15 +1,6 @@
-"""
-TODO:
-add boolean audio_only default=False for purely music playlists, otherwise download video as well
-add functionality to be run as command line utility and takes playlist URL as arg
-"""
 import requests
 from bs4 import BeautifulSoup
 from pytube import YouTube
-
-
-# Jacob Collier - Djesse Vol. 1 Playlist for testing
-DJESSE = 'https://www.youtube.com/playlist?list=OLAK5uy_nhzGQeVePsahNKbIK1U6qLRYkSvHwDTtw'
 
 
 class Playlist():
@@ -19,9 +10,10 @@ class Playlist():
         'youtube': 'https://www.youtube.com',
     }
 
-    def __init__(self, url, source='youtube'):
+    def __init__(self, url, audio_only=True, source='youtube'):
         self.url = url
         self.source = source
+        self.audio_only = audio_only
         self.scrape_info()
         self.destination = f"{self.author} - {self.title}/"
 
@@ -46,16 +38,27 @@ class Playlist():
         self.urls = urls
 
     def download(self):
-        total_num = len(self.urls)
+        total_tracks = len(self.urls)
         for index, url in enumerate(self.urls):
             yt = YouTube(url)
-            stream = yt.streams.get_audio_only()
+            if self.audio_only:
+                stream = yt.streams.get_audio_only()
+            else:
+                stream = yt.streams.get_highest_resolution()
+
             stream.download(self.destination)
-            print(f'Downloaded track {index + 1} of {total_num}.')
+            print(f'Downloaded track {index + 1} of {total_tracks}.')
+
         print('Playlist Download Complete.')
 
 
 if __name__ == "__main__":
     url = input("Enter Playlist URL: ")
-    p = Playlist(url)
+    audio_only = input("Download audio only? (True/False): ")
+
+    if audio_only.lower() == 'false':
+        p = Playlist(url, audio_only=False)
+    else:
+        p = Playlist(url)
+
     p.download()
