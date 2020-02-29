@@ -10,10 +10,9 @@ class Playlist():
         'youtube': 'https://www.youtube.com',
     }
 
-    def __init__(self, url, audio_only=True, source='youtube'):
+    def __init__(self, url, source='youtube'):
         self.url = url
         self.source = source
-        self.audio_only = audio_only
         self.scrape_info()
         self.destination = f"{self.author} - {self.title}/"
 
@@ -37,11 +36,11 @@ class Playlist():
 
         self.urls = urls
 
-    def download(self):
+    def download(self, audio_only=True):
         total_tracks = len(self.urls)
         for index, url in enumerate(self.urls):
             yt = YouTube(url)
-            if self.audio_only:
+            if audio_only:
                 stream = yt.streams.get_audio_only()
             else:
                 stream = yt.streams.get_highest_resolution()
@@ -54,11 +53,5 @@ class Playlist():
 
 if __name__ == "__main__":
     url = input("Enter Playlist URL: ")
-    audio_only = input("Download audio only? (True/False): ")
-
-    if audio_only.lower() == 'false':
-        p = Playlist(url, audio_only=False)
-    else:
-        p = Playlist(url)
-
+    p = Playlist(url)
     p.download()
