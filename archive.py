@@ -46,10 +46,13 @@ class Playlist():
         self.urls = urls
 
     def download(self):
-        for url in self.urls:
+        total_num = len(self.urls)
+        for index, url in enumerate(self.urls):
             yt = YouTube(url)
             stream = yt.streams.get_audio_only()
             stream.download(self.destination)
+            print(f'Downloaded track {index + 1} of {total_num}.')
+        print('Playlist Download Complete.')
 
 
 if __name__ == "__main__":
