@@ -62,5 +62,7 @@ def multi_playlist(self):
 
 if __name__ == "__main__":
     url = input("Enter Playlist URL: ")
+    audio_only = input('Download only audio? (y/n)').lower()
+    audio_only = True if audio_only == 'y' else False
     p = Playlist(url)
-    p.download()
+    p.download(audio_only=audio_only)
