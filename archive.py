@@ -1,3 +1,7 @@
+'''This was my first attempt to create a YouTube Playlist Archiver using 
+requests, bs4, and pytube. It has since broken. Saved for posterity.
+Now use "python3 get_playlist.py" command instead.'''
+
 import requests
 from bs4 import BeautifulSoup
 from pytube import YouTube
