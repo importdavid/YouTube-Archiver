@@ -1,17 +1,21 @@
+"""Creates a folder in my Windows Music folder in which to download the
+highest bitrate audio file for each track in a given playlist."""
+
 from pytube import Playlist
 from pathlib import Path
-
-# Bo Burnham's Inside Example
-playlist_url = 'https://www.youtube.com/playlist?list=PLLPzo5hOm16VQrTv7lk0POyv6RiFDqgqn'
-
-# My Music folder
-music_folder = Path(f'/mnt/c/Users/David/Music/')
+import platform
 
 # Function to create directory based on artist and playlist title
 def create_directory(playlist):
     first_video = playlist.videos[0]
     artist, playlist_title = first_video.author, playlist.title
     folder_name = f"{artist} - {playlist_title}"
+
+    # My Music folder
+    if platform.system() == 'Linux': # WSL
+        music_folder = Path(f'/mnt/c/Users/David/Music/')
+    else:
+        music_folder = Path.home() / 'Music'
     output_folder = music_folder / folder_name
 
     # Create the folder if it doesn't exist
@@ -41,7 +45,8 @@ def download_highest_bitrate_audio(video, track, output_folder):
 
 
 if __name__ == '__main__':
-    # Create a Playlist object
+    # Prompt user to input YouTube URL
+    playlist_url = input("Enter the YouTube URL of the playlist you want to download: ")
     playlist = Playlist(playlist_url)
 
     # Create directory based on artist and playlist title
