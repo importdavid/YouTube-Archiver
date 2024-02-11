@@ -25,7 +25,7 @@ def download_video(url):
 
 if __name__ == "__main__":
     # Prompt user to input YouTube URL
-    video_url = input("Enter the YouTube URL of the video you want to download: ")
+    video_url = input("Enter YouTube video URL: ")
 
     # Download the video
     download_video(video_url)

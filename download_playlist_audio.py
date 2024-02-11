@@ -46,7 +46,7 @@ def download_highest_bitrate_audio(video, track, output_folder):
 
 if __name__ == '__main__':
     # Prompt user to input YouTube URL
-    playlist_url = input("Enter the YouTube URL of the playlist you want to download: ")
+    playlist_url = input("Enter YouTube playlist URL: ")
     playlist = Playlist(playlist_url)
 
     # Create directory based on artist and playlist title
