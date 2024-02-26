@@ -1,12 +1,7 @@
-"# YouTube-Playlist-Archiver" 
-
-"""
-TODO:
-add functionality to be run as command line utility and takes playlist URL as arg
-"""
+YouTube-Archiver
 
 Basic Usage:
-    Command: python archive.py
+    Command: python youtube_download.py
         enter url
         choose audio_only = True/False
         playlist tracks downloaded into folder
