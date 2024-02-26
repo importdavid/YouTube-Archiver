@@ -1,11 +1,9 @@
-"""Give user two choices: 
-    Playlist / Single
-    Video / Audio
-If playlist, create a directory to contain all youtube files.
-Download youtube file(s)
+"""
+Prompts the user for a YouTube url and whether audio_only is desired.
+If playlist, creates output_folder and downloads playlist to it.
+If not playlist, downloads single YouTube file.
 
-I should just save files to Downloads folder, then organize appropriately.
-Perhaps have an option to easy_sort.
+Todo: Possibly add functionality to auto sort downloads into home folders.
 """
 
 from pytube import YouTube, Playlist
@@ -13,6 +11,11 @@ from pathlib import Path
 
 # Function to create directory based on artist and playlist title
 def create_directory(playlist):
+    """
+    Creates a directory derived from YouTube playlist details.
+    folder_name = f"{playlist.artist} - {playlist.title}"
+    """
+
     first_video = playlist.videos[0]
     artist, playlist_title = first_video.author, playlist.title
     folder_name = f"{artist} - {playlist_title}"
@@ -24,6 +27,11 @@ def create_directory(playlist):
     return output_folder
 
 def download(video, output_folder=None, track=None, audio_only=False):
+    """
+    Downloads a single YouTube file. audio_only=False by default.
+    If video is one of playlist, names file with track # prefix.
+    """
+
     if audio_only:
         audio_streams = video.streams.filter(only_audio=True)
 
@@ -59,7 +67,7 @@ if __name__ == '__main__':
     else:
         audio_only = False
 
-    # Try downloading as a playlist, otherwise as a single YouTube    
+    # Try downloading as a playlist, otherwise as a single YouTube  
     try:
         playlist = Playlist(url)
         output_folder = create_directory(playlist)
@@ -76,7 +84,3 @@ if __name__ == '__main__':
         download(yt, audio_only=audio_only)
 
         print("Download complete.")
-
-    except Exception as e:
-        print('Download failed...')
-        print(e)
