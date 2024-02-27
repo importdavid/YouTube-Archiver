@@ -1,9 +1,9 @@
 """
 Prompts the user for a YouTube url and whether audio_only is desired.
 If playlist, creates output_folder and downloads playlist to it.
-If not playlist, downloads single YouTube file.
+If not playlist, or entire playlist undesired, downloads single YouTube file.
 
-Todo: Possibly add functionality to auto sort downloads into home folders.
+Todo: Possible functionality to auto-sort downloads into home folders.
 """
 
 from pytube import YouTube, Playlist
@@ -29,7 +29,7 @@ def create_directory(playlist):
 def download(video, output_folder=None, track=None, audio_only=False):
     """
     Downloads a single YouTube file. audio_only=False by default.
-    If video is one of playlist, names file with track # prefix.
+    If video is one of playlist, names file with prefix 'track #' (e.g. '001 ').
     """
 
     if audio_only:
@@ -67,20 +67,25 @@ if __name__ == '__main__':
     else:
         audio_only = False
 
-    # Try downloading as a playlist, otherwise as a single YouTube  
+    # Try and verify downloading as a playlist, otherwise as a single file.
     try:
         playlist = Playlist(url)
+
+        # Check whether user intent was to download entire playlist.
+        download_list = input("Download entire playlist? ('y' or 'n') ")
+        if download_list.lower().strip() != 'y':
+            raise KeyError
+        
+        # Create folder for playlist tracks
         output_folder = create_directory(playlist)
    
         # Iterate through videos in the playlist
         for track, video in enumerate(playlist.videos):
             download(video, output_folder, track, audio_only)
 
-        print("Download complete.")
-
     except KeyError:
         print('Not a playlist...Downloading single file...')
         yt = YouTube(url)
         download(yt, audio_only=audio_only)
 
-        print("Download complete.")
+    print('Program finished')
