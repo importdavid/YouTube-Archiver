@@ -56,7 +56,7 @@ def download(video, output_folder=None, track=None, audio_only=False):
     else:
         stream.download()
 
-if __name__ == '__main__':
+def main():
     # Prompt user for url.
     url = input("Enter YouTube URL: ")
 
@@ -84,3 +84,6 @@ if __name__ == '__main__':
         download(yt, audio_only=audio_only)
 
         print("Download complete.")
+
+if __name__ == '__main__':
+    main()
